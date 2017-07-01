@@ -35,7 +35,7 @@
 
   #tbhslfilter thead,
   #tbhslfilter th {text-align: center; vertical-align:middle;}
-
+  table#tbhslfilter  { font-size: 9px; } 
   
 
   </style>

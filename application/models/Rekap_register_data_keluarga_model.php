@@ -675,38 +675,39 @@ class Rekap_register_data_keluarga_model extends CI_Model {
     public function jns_rpt5($idkec,$iddesa,$iddusun,$idrt)
     {
          $kd_wl=$this->getkdwl($idkec,$iddesa,$iddusun,$idrt);
-        
-        $tb = new tb_gen('tbgen');    
-    $tb->sql_from= 'vw_fam_indv f';
-    $tb->sql_select = "Kd_fam,Nama,
-              (SELECT p.Nm_prosplvl_ind FROM dbo_prosp_lvl p WHERE f.Kd_prosplvl=p.Kd_prosplvl) AS prosp,
-              (SELECT ii.Nama FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=2 AND ii.Kd_mutasi IS NULL ORDER BY ii.Tgl_lahir LIMIT 0,1) AS istr,
-              (SELECT ii.Kd_indv FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=2 AND ii.Kd_mutasi IS NULL ORDER BY ii.Tgl_lahir LIMIT 0,1) AS id_istr,
-              (SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(Tgl_lahir)),'%Y')+0 FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=2 AND ii.Kd_mutasi IS NULL ORDER BY ii.Tgl_lahir LIMIT 0,1) AS istr_u,
-              (SELECT COUNT(*) FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=3 AND ii.Kd_mutasi IS NULL) AS ank,
-              (SELECT MIN(DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(Tgl_lahir)),'%Y')+0) FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=3 AND ii.Kd_mutasi IS NULL GROUP BY ii.Kd_fam) AS ank_kecil,
-              (SELECT ii.Kd_indv FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=3 AND ii.Kd_mutasi IS NULL ORDER BY ii.Tgl_lahir DESC LIMIT 0,1) AS id_ank_kecil ";
-        $tb->sql_orderby = 'Kd_fam';
-        $data = $tb->getData("$kd_wl (Kd_prosplvl=1 OR Kd_prosplvl=2 OR Kd_prosplvl=6 OR Kd_prosplvl=7) AND 
-                                    Kd_contyp IS NOT NULL AND 
-                                    pus='1' AND 
-                                    Kd_martl=2 AND Kd_fammbrtyp=1 AND Kd_mutasi IS NULL AND 
-                                    (SELECT COUNT(*) AS j_istr FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=2 AND ii.Kd_mutasi IS NULL HAVING j_istr > 0)");
-        
-        $tmp_dt_db=array();
-        if(!empty($data))
-        {
-           foreach ($data as $row) {
-              $tmp = array(($row['istr']!='') ? $row['istr'] : 'TIDAK ADA NAMA',
-                           ($row['nama']!='')  ? $row['nama'] : 'TIDAK ADA NAMA',
-                            $row['istr_u'],($row['ank'] > 0) ? $row['ank'] : '-',
-                           (isset($row['ank_kecil'])) ? $row['ank_kecil'] : '-',
-                           $row['prosp']);
-              $tmp_dt_db['data'][]=$tmp;
-           }
-        }
+                   
+            $this->db->select("Kd_fam,Nama,
+                  (SELECT p.Nm_prosplvl_ind FROM dbo_prosp_lvl p WHERE f.Kd_prosplvl=p.Kd_prosplvl) AS prosp,
+                  (SELECT ii.Nama FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=2 AND ii.Kd_mutasi IS NULL ORDER BY ii.Tgl_lahir LIMIT 0,1) AS istr,
+                  (SELECT ii.Kd_indv FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=2 AND ii.Kd_mutasi IS NULL ORDER BY ii.Tgl_lahir LIMIT 0,1) AS id_istr,
+                  (SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(Tgl_lahir)),'%Y')+0 FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=2 AND ii.Kd_mutasi IS NULL ORDER BY ii.Tgl_lahir LIMIT 0,1) AS istr_u,
+                  (SELECT COUNT(*) FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=3 AND ii.Kd_mutasi IS NULL) AS ank,
+                  (SELECT MIN(DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(Tgl_lahir)),'%Y')+0) FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=3 AND ii.Kd_mutasi IS NULL GROUP BY ii.Kd_fam) AS ank_kecil,
+                  (SELECT ii.Kd_indv FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=3 AND ii.Kd_mutasi IS NULL ORDER BY ii.Tgl_lahir DESC LIMIT 0,1) AS id_ank_kecil ");
+          $this->db->from('vw_fam_indv f');          
+          $this->db->order_by('Kd_fam'); 
+          $this->db->where("$kd_wl (Kd_prosplvl=1 OR Kd_prosplvl=2 OR Kd_prosplvl=6 OR Kd_prosplvl=7) AND 
+                                        Kd_contyp IS NOT NULL AND 
+                                        pus='1' AND 
+                                        Kd_martl=2 AND Kd_fammbrtyp=1 AND Kd_mutasi IS NULL AND 
+                                        (SELECT COUNT(*) AS j_istr FROM dbo_individu ii WHERE f.Kd_fam=ii.Kd_fam AND ii.Kd_fammbrtyp=2 AND ii.Kd_mutasi IS NULL HAVING j_istr > 0)");
+          $data = $this->db->get();     
 
-        return $tmp_dt_db;
+
+            $tmp_dt_db=array();
+            if(!empty($data))
+            {
+               foreach ($data->result_array() as $row) {
+                  $tmp = array(($row['istr']!='') ? $row['istr'] : 'TIDAK ADA NAMA',
+                               ($row['nama']!='')  ? $row['nama'] : 'TIDAK ADA NAMA',
+                                $row['istr_u'],($row['ank'] > 0) ? $row['ank'] : '-',
+                               (isset($row['ank_kecil'])) ? $row['ank_kecil'] : '-',
+                               $row['prosp']);
+                  $tmp_dt_db['data'][]=$tmp;
+               }
+            }
+
+            return $tmp_dt_db;
     }
 
 

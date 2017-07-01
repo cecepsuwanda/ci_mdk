@@ -142,7 +142,7 @@
                                                         array(array('PROVINSI',array()),array(' : ',array()),array(' JAWA BARAT',array())) 
                                                        ),'');    
                       
-                                $html_tab1 .='<center>'.$tb_judul->display('').'</center><br><br>';
+                                $html_tab1 .='<center>'.$tb_judul->display('tbjudul').'</center><br><br>';
                                 $html_tab1 .='A. DATA DEMOGRAFI DAN KB<br>';
 
                                  $tmp_dt_tb = $this->Rekap_register_data_keluarga_model->$jns_rpt($idkec,$iddesa,$row['id_unit_detail'],$row1['id_unit_detail']); 
@@ -206,11 +206,11 @@
                                  $dt_tb = $tmp['dt_tb'];
                                                              
 
-                                 $tb_tab1 = new mytable(array('id'=>'tbtab1'.$i++,'width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
+                                 $tb_tab1 = new mytable(array('id'=>'tbhslfilter'.$i++,'width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
                                                             $jdltbl,
                                                             $dt_tb,$txt);
 
-                                 $html_tab1 .= $tb_tab1->display().'<br><br>';
+                                 $html_tab1 .= $tb_tab1->display('tbhslfilter').'<br><br>';
 
                                }
                              }

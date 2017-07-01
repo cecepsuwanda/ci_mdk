@@ -2,11 +2,11 @@
  <?php
                        $pelaporan = new pelaporan;
                        
-                       $dt_unit = new dt_unit_detail;
-                        $nm_kecamatan = $dt_unit->getnm("id_unit_detail='$idkec'");
-                        $nm_kelurahan = $dt_unit->getnm("id_unit_detail='$iddesa'"); 
+                        
+                        $nm_kecamatan = $this->Unit_detail_model->getnm("id_unit_detail='$idkec'");
+                        $nm_kelurahan = $this->Unit_detail_model->getnm("id_unit_detail='$iddesa'"); 
 
-                        $nocol = $this->build_nocol(19);
+                        $nocol = $pelaporan->build_nocol(19);
 
                             $jdltbl =  array(
                                           array(
@@ -43,24 +43,24 @@
                         
                         
                         if(empty($iddusun)){
-                         $data_dusun = $dt_unit->getdusun($iddesa);    
+                         $data_dusun = $this->Unit_detail_model->getdata("id_unit=13 AND id_unit_detail_idk='$iddesa'");    
                         }else{      
-                          $data_dusun = $dt_unit->getdata("id_unit=13 AND id_unit_detail_idk='$iddesa' AND id_unit_detail='$iddusun'");
+                          $data_dusun = $this->Unit_detail_model->getdata("id_unit=13 AND id_unit_detail_idk='$iddesa' AND id_unit_detail='$iddusun'");
                         }    
                         
                         $html_tab5='';
                         $i=1;
                         if(!empty($data_dusun))
                         {
-                          $dt_report = new dt_report;
+                          
                           foreach($data_dusun as $row)
                            {  
                               $nmdusun = $row['no_unit_detail'];
                               if(empty($idrt))
                               {   
-                                 $data_rt = $dt_unit->getrt($row['id_unit_detail']);
+                                 $data_rt = $this->Unit_detail_model->getdata("id_unit=14 AND id_unit_detail_idk='$row[id_unit_detail]'");
                               }else{
-                                 $data_rt = $dt_unit->getdata("id_unit=14 AND id_unit_detail_idk='$row[id_unit_detail]' and id_unit_detail='$idrt'"); 
+                                 $data_rt = $this->Unit_detail_model->getdata("id_unit=14 AND id_unit_detail_idk='$row[id_unit_detail]' and id_unit_detail='$idrt'"); 
                               }
 
                                if(!empty($data_rt))
@@ -79,10 +79,10 @@
                                                           array(array('PROVINSI',array()),array(' : ',array()),array(' JAWA BARAT',array())) 
                                                          ),'');    
                         
-                                  $html_tab5 .='<center>'.$tb_judul->display('').'</center><br><br>';
+                                  $html_tab5 .='<center>'.$tb_judul->display('tbjudul').'</center><br><br>';
                                   
 
-                                   $tmp_dt_tb = $dt_report->getdtmenu02_tab5($idkec,$iddesa,isset($row['id_unit_detail']) ? $row['id_unit_detail'] :'',isset($row1['id_unit_detail']) ? $row1['id_unit_detail'] : ''); 
+                                   $tmp_dt_tb = $this->Rekap_register_data_keluarga_model->$jns_rpt($idkec,$iddesa,isset($row['id_unit_detail']) ? $row['id_unit_detail'] :'',isset($row1['id_unit_detail']) ? $row1['id_unit_detail'] : ''); 
                                    //$tmp = $this->build_dt_tb($tmp_dt_tb);
                                    $dt_tb = null;//$tmp['dt_tb'];
                                    $txt = '';//$tmp['footer_tb']; 
@@ -117,8 +117,7 @@
                                    $klmjdl[3]=array(array('ALKON',array('align'=>'center')),array('KODE',array('align'=>'center')));
                                    
                                    $i=4;
-                                   $dt = new dt_contr_typ;
-                                   $data = $dt->getdata('');
+                                   $data = $this->Contr_typ_model->getdata('');
 
                                    foreach ($data as $row) {
                                      $klmjdl[$i][]=array(chr(ord('a')+($i-4)).'. '.$row['Nm_contyp_ind'],array('align'=>'left','style'=>'border-right-style: none;'));
@@ -129,8 +128,7 @@
 
                                    $klmjdl[$i++]=array(array('3. Jumlah Peserta KB Aktif Menurut Tempat Pelayanan',array('align'=>'left','colspan'=>'2')));
                                    
-                                   $tb = new tb_gen('dbo_contr_src');
-                                   $data = $tb->getData('');
+                                   $data = $this->Contr_src_model->getData('');
                                    
                                    foreach ($data as $row) {
                                      $klmjdl[$i][]=array($row['Nm_consrc_ind'],array('align'=>'left','colspan'=>'2'));
@@ -178,17 +176,17 @@
                                      $txt .='</tr>';
                                     }
                         
-                                   $tb_tab5 = new mytable(array('id'=>'tbtab5'.$i++,'width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
+                                   $tb_tab5 = new mytable(array('id'=>'tbhslfilter'.$i++,'width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
                                                               $jdltbl,
                                                               $dt_tb,$txt);
 
-                                   $html_tab5 .= $tb_tab5->display().'<br><br>';
+                                   $html_tab5 .= $tb_tab5->display('tbhslfilter').'<br><br>';
 
                                  }
                                }
                            }
                         }
 
-                        return $html_tab5;
+                        echo $html_tab5;
  ?>              
          

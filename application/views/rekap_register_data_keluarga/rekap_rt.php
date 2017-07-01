@@ -33,8 +33,10 @@
 
   <style type="text/css">
 
-  #tbhslfilter thead,
-  #tbhslfilter th {text-align: center; vertical-align:middle;}
+  .tbhslfilter thead,
+  .tbhslfilter th {text-align: center; vertical-align:middle;}
+  table.tbhslfilter  { font-size: 9px; }
+  table.tbjudul  { font-size: 9px; }
 
   
 

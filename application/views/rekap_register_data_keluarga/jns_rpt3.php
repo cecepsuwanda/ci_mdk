@@ -62,7 +62,7 @@
                                                           array(array('PROVINSI',array()),array(' : ',array()),array(' JAWA BARAT',array())) 
                                                          ),'');    
                         
-                                  $html_tab3 .='<center>'.$tb_judul->display('').'</center><br><br>';
+                                  $html_tab3 .='<center>'.$tb_judul->display('tbjudul').'</center><br><br>';
                                   $html_tab3 .='C. DATA ANGGOTA KELUARGA<br>';
 
                                    $tmp_dt_tb = $this->Rekap_register_data_keluarga_model->$jns_rpt($idkec,$iddesa,$row['id_unit_detail'],$row1['id_unit_detail']); 
@@ -97,11 +97,11 @@
                                    $txt = '';//$tmp['footer_tb']; 
                         
                         
-                                   $tb_tab3 = new mytable(array('id'=>'tbtab3'.$i++,'width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
+                                   $tb_tab3 = new mytable(array('id'=>'tbhslfilter'.$i++,'width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
                                                               $jdltbl,
                                                               $dt_tb,$txt);
 
-                                   $html_tab3 .= $tb_tab3->display().'<br><br>';
+                                   $html_tab3 .= $tb_tab3->display('tbhslfilter').'<br><br>';
 
                                  }
                                }

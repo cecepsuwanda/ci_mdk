@@ -81,7 +81,7 @@
                                                          ),'');    
                         
                                    $html_tab4 .= "<center><bold>REGISTER KELOMPOK KB BAGI SELURUH KELUARGA</bold><br><br></center>";
-                                   $html_tab4 .='<center>'.$tb_judul->display('').'</center><br><br>';
+                                   $html_tab4 .='<center>'.$tb_judul->display('tbjudul').'</center><br><br>';
                                                             
 
                                    $tmp_dt_tb = $this->Rekap_register_data_keluarga_model->$jns_rpt($idkec,$iddesa,isset($row['id_unit_detail']) ? $row['id_unit_detail'] :'',isset($row1['id_unit_detail']) ? $row1['id_unit_detail'] : ''); 
@@ -178,11 +178,11 @@
                                     }
 
 
-                                   $tb_tab4 = new mytable(array('id'=>'tbtab4'.$i++,'width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
+                                   $tb_tab4 = new mytable(array('id'=>'tbhslfilter'.$i++,'width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
                                                               $jdltbl,
                                                               $dt_tb,$txt);
 
-                                   $html_tab4 .= $tb_tab4->display().'<br><br>';
+                                   $html_tab4 .= $tb_tab4->display('tbhslfilter').'<br><br>';
 
                                  }
                                }
