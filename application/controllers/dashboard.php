@@ -222,6 +222,26 @@ class Dashboard extends CI_Controller {
      
   } 
 
+  public function rekap_data_keluarga_filter()
+  {
+     $iddusun = $this->input->post('iddusun');
+     $iddesa = $this->input->post('iddesa');
+     $idkec = $this->input->post('idkec');
+     $idrt = $this->input->post('idrt');
+     $jns_rpt = $this->input->post('jns_rpt');
+     $folder = $this->input->post('folder');
+     $page = $this->input->post('page');
+
+     $data['idkec']=$idkec;
+     $data['iddesa']=$iddesa;
+     $data['iddusun']=$iddusun;
+     $data['idrt']=$idrt;
+     $data['jns_rpt']=$jns_rpt;  
+
+     echo $this->load->view($folder.'/'.$jns_rpt.'.php',$data,true);  
+     
+  } 
+
 	public function pelaporan($param1,$param2)
 	{
       $data['menu'] = $this->get_menu();
@@ -246,6 +266,14 @@ class Dashboard extends CI_Controller {
       $tmp_data=$this->filter_limit();      
       $data=array_merge($data,$tmp_data);
       $this->load->view('rekap_register_data_keluarga/'.$param1,$data);
+  }
+
+  public function rekap_data_keluarga($param1)
+  {
+      $data['menu'] = $this->get_menu();
+      $tmp_data=$this->filter_limit();      
+      $data=array_merge($data,$tmp_data);
+      $this->load->view('rekap_data_keluarga/'.$param1,$data);
   }
   
 
