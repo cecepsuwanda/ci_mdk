@@ -232,11 +232,14 @@ class Dashboard extends CI_Controller {
      $folder = $this->input->post('folder');
      $page = $this->input->post('page');
 
+     $tmp_dt_tb=$this->Rekap_data_keluarga_model->$jns_rpt($idkec,$iddesa,$iddusun,$idrt); 
+
      $data['idkec']=$idkec;
      $data['iddesa']=$iddesa;
      $data['iddusun']=$iddusun;
      $data['idrt']=$idrt;
-     $data['jns_rpt']=$jns_rpt;  
+     $data['jns_rpt']=$jns_rpt;
+     $data['tmp_dt_tb']=$tmp_dt_tb;  
 
      echo $this->load->view($folder.'/'.$jns_rpt.'.php',$data,true);  
      

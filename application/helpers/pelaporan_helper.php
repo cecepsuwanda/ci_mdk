@@ -2,6 +2,20 @@
 
 class pelaporan
 {
+    
+      public function getjudul($idkec,$iddesa,$iddusun,$idrt)
+	  {
+	             
+	    $subjudul='KABUPATEN/KOTA';         
+	    $subjudul= ($idkec>0) ? 'KECAMATAN' : $subjudul;        
+	    $subjudul= ($iddesa>0) ?'DESA/KELURAHAN' : $subjudul;
+	    $subjudul= ($iddusun>0) ? 'DUSUN/RW' : $subjudul;   
+	    $subjudul= ($idrt>0) ? 'RT' : $subjudul;         
+
+	    return $subjudul;  
+	  }
+
+
     public function getsubjudul($idkec,$iddesa,$iddusun,$idrt)
 	{
 		$ci = & get_instance();
@@ -91,17 +105,48 @@ class pelaporan
 		return $nm;
 	}
 
-	public function build_nocol($jml)
+	public function build_nocol($jml,$start=1)
 	{
 		$nocol=array();
-		for($i=1;$i<=$jml;$i++)
+		for($i=$start;$i<=$jml;$i++)
 		{
-			$nocol[]=array($i,array());
+			$nocol[]=array($i,array('bgcolor'=>'#99CCFF'));
 		} 
 		return $nocol;
+
 	}
 
-	
+	public function getjdltab($idkec,$iddesa,$iddusun,$idrt,$jml=0)
+	  {
+	    $jdl=array();
+
+	    $ci = & get_instance();
+        $ci->load->model('Unit_detail_model');
+
+	    $dtunit = $ci->Unit_detail_model;
+	    $jdl[] = array(array('JUMLAH '.$this->getnmklm($idkec,$iddesa,$iddusun,$idrt).' YANG ADA',array()),array(' : ',array()),array($jml,array()));
+	                
+	   if($iddusun>0){
+	      $jdl[] = array(array('DUSUN/RW',array()),array(' : ',array()),array($dtunit->getnm("id_unit_detail='$iddusun'"),array()),
+	                     array('NO. KODE DUSUN/RW',array('align'=>'right')),array(' : ',array()),array(' '.$iddusun,array()));
+	   }
+	   if($iddesa>0){
+	      $jdl[] =array(array('DESA/KELURAHAN',array()),array(' : ',array()),array($dtunit->getnm("id_unit_detail='$iddesa'"),array()),
+	                    array('NO. KODE DESA/KELURAHAN',array('align'=>'right')),array(' : ',array()),array(' '.$iddesa,array()));
+	   }
+	   
+	   if($idkec>0){
+	      $jdl[] = array(array('KECAMATAN',array()),array(' : ',array()),array($dtunit->getnm("id_unit_detail='$idkec'"),array()),
+	                     array('NO. KODE KECAMATAN',array('align'=>'right')),array(' : ',array()),array(' '.$idkec,array()));
+	   }
+	   $jdl[] = array(array('KABUPATEN/KOTA',array()),array(' : ',array()),array(' KABUPATEN BANDUNG BARAT',array()),
+	                  array('NO. KODE KABUPATEN/KOTA',array('align'=>'right')),array(' : ',array()),array(' 1017',array()));
+	   $jdl[] = array(array('PROVINSI',array()),array(' : ',array()),array(' JAWA BARAT',array()),
+	                  array('NO. KODE PROVINSI',array('align'=>'right')),array(' : ',array()),array(' 10',array())); 
+	    
+
+	    return $jdl;
+	  }
 
 
 
