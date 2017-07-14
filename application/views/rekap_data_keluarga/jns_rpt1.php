@@ -154,11 +154,11 @@
 
                                   
 
-                                  $tb_tab1 = new mytable(array('id'=>'tbtab1','width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
+                                  $tb_tab1 = new mytable(array('id'=>'tbhslfilter','width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
                                                             $jdltbl,
                                                             $dt_tb,$txt);
 
-                                 $html_tab1 .= $tb_tab1->display().'<br><br>';
+                                 $html_tab1 .= $tb_tab1->display('table table-bordered table-hover').'<br><br>';
                      
                      echo $html_tab1;     
  ?>              

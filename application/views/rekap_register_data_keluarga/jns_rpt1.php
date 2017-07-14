@@ -146,9 +146,7 @@
                                 $html_tab1 .='A. DATA DEMOGRAFI DAN KB<br>';
 
                                  $tmp_dt_tb = $this->Rekap_register_data_keluarga_model->$jns_rpt($idkec,$iddesa,$row['id_unit_detail'],$row1['id_unit_detail']); 
-
-                                 
-
+                               
                                  
                                  $txt = '<tr>';
                                  $txt .= "<th colspan='2' bgcolor='#000000'></th><th>JUMLAH</th>";
@@ -201,6 +199,8 @@
                                  $txt .= '</tr>';
                       
                                  $tmp_dt_tb['footer_tb']=array();
+                                 
+                                 
 
                                  $tmp = $pelaporan->build_dt_tb($tmp_dt_tb);
                                  $dt_tb = $tmp['dt_tb'];
@@ -210,7 +210,7 @@
                                                             $jdltbl,
                                                             $dt_tb,$txt);
 
-                                 $html_tab1 .= $tb_tab1->display('tbhslfilter').'<br><br>';
+                                 $html_tab1 .= $tb_tab1->display('table table-bordered table-hover').'<br><br>';
 
                                }
                              }

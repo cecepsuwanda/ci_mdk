@@ -151,7 +151,7 @@
                                                             $jdltbl,
                                                             $dt_tb,$txt);
 
-                                 $html_tab2 .= $tb_tab2->display('tbhslfilter').'<br><br>';
+                                 $html_tab2 .= $tb_tab2->display('table table-bordered table-hover').'<br><br>';
 
                                }
                              }

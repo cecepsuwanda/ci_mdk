@@ -2,162 +2,83 @@
  <?php
                        $pelaporan = new pelaporan;
                        
-                      
-                      $nm_kecamatan = $this->Unit_detail_model->getnm("id_unit_detail='$idkec'");
-                      $nm_kelurahan = $this->Unit_detail_model->getnm("id_unit_detail='$iddesa'"); 
+                       $tmp = $pelaporan->build_dt_tb($tmp_dt_tb);
+                       $dt_tb = $tmp['dt_tb'];
+                       $txt = $tmp['footer_tb'];
 
-                      
-                      $nm = $this->Indikator_ks_model->getnm('id_ind_ks>=6 and id_ind_ks<=36',0,0,0,array('bgcolor'=>'#99CCFF'));
-                      $jml = $this->Indikator_ks_model->getnumrows();
 
-                      $nm[]=array('KELUARGA PRA SEJAHTERA',array('bgcolor'=>'#99CCFF'));
-                      $nm[]=array('KELUARGA SEJAHTERA I',array('bgcolor'=>'#99CCFF'));
-                      $nm[]=array('KELUARGA SEJAHTERA II',array('bgcolor'=>'#99CCFF'));
-                      $nm[]=array('KELUARGA SEJAHTERA III',array('bgcolor'=>'#99CCFF'));
-                      $nm[]=array('KELUARGA SEJAHTERA III PLUS',array('bgcolor'=>'#99CCFF'));
+                       $html_tab7=''; 
+                       
+                              $sub = array(
+                                               array('IKUT',array('rowspan'=>'2','bgcolor'=>'#99CCFF')),
+                                               array('TIDAK IKUT',array('rowspan'=>'2','bgcolor'=>'#99CCFF')),
+                                               array('IKUT',array('rowspan'=>'2','bgcolor'=>'#99CCFF')),
+                                               array('TIDAK IKUT',array('rowspan'=>'2','bgcolor'=>'#99CCFF')),
+                                               array('SEKOLAH',array('colspan'=>'2','bgcolor'=>'#99CCFF')),
+                                               array('TIDAK SEKOLAH',array('colspan'=>'2','bgcolor'=>'#99CCFF')),
+                                               array('PASANGAN USIA SUBUR',array('rowspan'=>'2','bgcolor'=>'#99CCFF')),
+                                               array('KELOMPOK UMUR',array('colspan'=>'3','bgcolor'=>'#99CCFF'))                           
+                                               );
+                                              
+                        $dt_contr_src = $this->Contr_src_model->getData('');
 
-                      
-                      $jdltbl =  array(array(
-                                          array('NO URUT RUMAH TANGGA',array('rowspan'=>'2','bgcolor'=>'#99CCFF')),
-                                          array('NO URUT KEPALA KELUARGA',array('rowspan'=>'2','bgcolor'=>'#99CCFF')),
-                                          array('INDIKATOR KELUARGA SEJAHTERA',array('colspan'=>$jml,'bgcolor'=>'#99CCFF')),
-                                          array('TAHAPAN KELUARGA SEJAHTEA',array('colspan'=>'5','bgcolor'=>'#99CCFF'))
-                                        ),
-                                        $nm                 
-                                       );
-                      
-                      $html_tab2 = "";
-                      
-                      if(empty($iddusun)){
-                       $data_dusun = $this->Unit_detail_model->getdata("id_unit=13 AND id_unit_detail_idk='$iddesa'");   
-                      }else{      
-                        $data_dusun = $this->Unit_detail_model->getdata("id_unit=13 AND id_unit_detail_idk='$iddesa' AND id_unit_detail='$iddusun'");
-                      }    
-                      
-                      $i=1;
-                      if(!empty($data_dusun))
-                      {
-                        
-                        foreach($data_dusun as $row)
-                         {  
-                            if(empty($idrt))
-                            {   
-                               $data_rt = $this->Unit_detail_model->getdata("id_unit=14 AND id_unit_detail_idk='$row[id_unit_detail]'"); 
-                            }else{
-                               $data_rt = $this->Unit_detail_model->getdata("id_unit=14 AND id_unit_detail_idk='$row[id_unit_detail]' and id_unit_detail='$idrt'"); 
-                            }
-                             if(!empty($data_rt))
-                             {
-                               foreach ($data_rt as $row1) {
-                                
-                               
-                                $tb_judul = new mytable(array('id'=>'tbjudul','width'=>'300px'),
-                                                  array(),
-                                                  array(array(array('JUMLAH KELUARGA YANG ADA',array()),array(' : ',array()),array('',array())),
-                                                        array(array('RT',array()),array(' : ',array()),array($row1['no_unit_detail'],array())),
-                                                        array(array('DUSUN/RW',array()),array(' : ',array()),array($row['no_unit_detail'],array())),
-                                                        array(array('DESA/KELURAHAN',array()),array(' : ',array()),array($nm_kelurahan,array())),
-                                                        array(array('KECAMATAN',array()),array(' : ',array()),array($nm_kecamatan,array())),
-                                                        array(array('KABUPATEN/KOTA',array()),array(' : ',array()),array(' KABUPATEN BANDUNG BARAT',array())),
-                                                        array(array('PROVINSI',array()),array(' : ',array()),array(' JAWA BARAT',array())) 
-                                                       ),'');    
-                      
-                                $html_tab2 .='<center>'.$tb_judul->display('tbjudul').'</center><br><br>';
-                                $html_tab2 .='B. TAHAPAN KELUARGA SEJAHTERA<br>';
+                        if(!empty($dt_contr_src))
+                        {
+                          foreach ($dt_contr_src as $row) {
+                            $sub[]=array(strtoupper($row['Nm_consrc_ind']),array('rowspan'=>'2','bgcolor'=>'#99CCFF'));
+                          }
+                        }
 
-                                 $tmp_dt_tb = $this->Rekap_register_data_keluarga_model->$jns_rpt($idkec,$iddesa,$row['id_unit_detail'],$row1['id_unit_detail']);
-                                 
-                                 $txt = "<tr><th align='center' bgcolor='#000000' colspan='27' >";
-                                 
-                                 if(isset($tmp_dt_tb['footer_tb']['row1'])){
-                                    foreach ($tmp_dt_tb['footer_tb']['row1'] as $key => $value) {
-                                      $txt .= "<th align='center'>$value</th>";
-                                    }
-                                 }     
-                                 
-                                 $txt .="</tr>";
-                                 $txt .= "<tr>
-                                             <th align='center' bgcolor='#000000'></th>
-                                             <th align='center' >V</th>";
-                                 
-                                 if(isset($tmp_dt_tb['footer_tb']['row2'])){
-                                    foreach ($tmp_dt_tb['footer_tb']['row2'] as $key => $value) {
-                                      $txt .= "<th align='center'>$value</th>";
-                                    }
-                                 }
-                                 $txt .= "<th align='center' bgcolor='#000000' colspan='5'></th>"; 
-                                 $txt .= "</tr>";
-                                 $txt .= "<tr>
-                                             <th align='center' bgcolor='#000000'></th>
-                                             <th align='center' >X</th>";               
-                                 if(isset($tmp_dt_tb['footer_tb']['row3'])){
-                                    foreach ($tmp_dt_tb['footer_tb']['row3'] as $key => $value) {
-                                      $txt .= "<th align='center'>$value</th>";
-                                    }
-                                 }
-                                 $txt .= "<th align='center' bgcolor='#000000' colspan='5'></th>"; 
-                                 $txt .= "</tr>";
-                                 $txt .= "<tr>
-                                             <th align='center' bgcolor='#000000'></th>
-                                             <th align='center' >-</th>";               
-                                 if(isset($tmp_dt_tb['footer_tb']['row4'])){
-                                    foreach ($tmp_dt_tb['footer_tb']['row4'] as $key => $value) {
-                                      $txt .= "<th align='center'>$value</th>";
-                                    }
-                                 }
-                                 $txt .= "<th align='center' bgcolor='#000000' colspan='5'></th>"; 
-                                 $txt .= "</tr>";
-                                 $txt .= "<tr>
-                                             <th align='center' bgcolor='#000000'></th>
-                                             <th align='center' >X*</th>";               
-                                 if(isset($tmp_dt_tb['footer_tb']['row5'])){
-                                    foreach ($tmp_dt_tb['footer_tb']['row5'] as $key => $value) {
-                                      $txt .= "<th align='center'>$value</th>";
-                                    }
-                                 }
-                                 $txt .= "<th align='center' bgcolor='#000000' colspan='5'></th>"; 
-                                 $txt .= "</tr>";
-                                 $txt .= "<tr><th align='center' colspan='32'>KELUARGA MENURUT INDIKATOR PRA SEJAHTERA</th></tr>";
-                                 $txt .= "<tr>
-                                              <th align='center' bgcolor='#000000'></th>
-                                              <th align='center' >X & X*</th>";               
-                                 if(isset($tmp_dt_tb['footer_tb']['row6'])){
-                                    foreach ($tmp_dt_tb['footer_tb']['row6'] as $key => $value) {
-                                      $txt .= "<th align='center'>$value</th>";
-                                    }
-                                 }
-                                 $txt .= "<th align='center' bgcolor='#000000' colspan='5'></th>"; 
-                                 $txt .= "</tr>";
-                                 $txt .= "<tr><th align='center' colspan='32'>KELUARGA MENURUT INDIKATOR SEJAHTERA I</th></tr>";
-                                 $txt .= "<tr>
-                                              <th align='center' bgcolor='#000000'></th>
-                                              <th align='center' >X & X*</th>";               
-                                 if(isset($tmp_dt_tb['footer_tb']['row7'])){
-                                    foreach ($tmp_dt_tb['footer_tb']['row7'] as $key => $value) {
-                                      $txt .= "<th align='center'>$value</th>";
-                                    }
-                                 }
-                                 $txt .= "<th align='center' bgcolor='#000000' colspan='5'></th>"; 
-                                 $txt .= "</tr>";
+                        $sub[]=array('PESERTA KB YANG IMPLANNYA AKAN DICABUT TAHUN DEPAN',array('rowspan'=>'2','bgcolor'=>'#99CCFF'));
 
-                      
-                                 $tmp_dt_tb['footer_tb']=array();
+                        $sub = $this->Non_acptr_reas_model->getnm('',0,$sub,array('rowspan'=>'2','bgcolor'=>'#99CCFF')); 
 
-                                 $tmp = $pelaporan->build_dt_tb($tmp_dt_tb);
-                                 $dt_tb = $tmp['dt_tb'];
+
+                        $nocol = $pelaporan->build_nocol(46,21);
+
+                        $jdltbl =  array(
+                                          array(
+                                               array('NO URUT',array('rowspan'=>'5','bgcolor'=>'#99CCFF')),
+                                               array($pelaporan->getnmklm($idkec,$iddesa,$iddusun,$idrt),array('rowspan'=>'5','bgcolor'=>'#99CCFF')),                           
+                                               array('STATUS KELUARGA PRA SEJAHTERA',array('rowspan'=>'5','bgcolor'=>'#99CCFF')),                           
+                                               array('KELUARGA',array('colspan'=>'23','bgcolor'=>'#99CCFF'))
+                                               ),
+                                          array(                           
+                                               array('JUMLAH JIWA KELOMPOK UMUR',array('colspan'=>'16','bgcolor'=>'#99CCFF')),
+                                               array('PASANGAN USIA SUBUR',array('colspan'=>'7','bgcolor'=>'#99CCFF'))
+                                               ),
+                                         array(                           
+                                               array('BAYI 0 < 1 TAHUN MENGIKUTI KEGIATAN POSYANDU',array('colspan'=>'2','bgcolor'=>'#99CCFF')),
+                                               array('BALITA 1 - < 5 TAHUN  MENGIKUTI KEGIATAN POSYANDU',array('colspan'=>'2','bgcolor'=>'#99CCFF')),
+                                               array('5 - 6 TAHUN',array('rowspan'=>'3','bgcolor'=>'#99CCFF')),
+                                               array('7 - 15 TAHUN',array('colspan'=>'4','bgcolor'=>'#99CCFF')),                           
+                                               array('16 - 21 TAHUN',array('rowspan'=>'3','bgcolor'=>'#99CCFF')),
+                                               array('22 - 59 TAHUN',array('rowspan'=>'3','bgcolor'=>'#99CCFF')),
+                                               array('60 TAHUN KEATAS',array('rowspan'=>'3','bgcolor'=>'#99CCFF')), 
+                                               array('JUMLAH',array('colspan'=>'4','bgcolor'=>'#99CCFF')),                          
+                                               array('PESERTA KB',array('colspan'=>'3','bgcolor'=>'#99CCFF')),
+                                               array('BUKAN PESERTA KB',array('colspan'=>'4','bgcolor'=>'#99CCFF')),
+                                               ),
+                                         $sub,
+                                         array(
+                                               array('LAKI-LAKI',array('bgcolor'=>'#99CCFF')),
+                                               array('PEREMPUAN',array('bgcolor'=>'#99CCFF')),
+                                               array('LAKI-LAKI',array('bgcolor'=>'#99CCFF')),
+                                               array('PEREMPUAN',array('bgcolor'=>'#99CCFF')),
+                                               array('< 20 TAHUN',array('bgcolor'=>'#99CCFF')),
+                                               array('20 - 29 TAHUN',array('bgcolor'=>'#99CCFF')),
+                                               array('30 - 49 TAHUN',array('bgcolor'=>'#99CCFF'))
+                                               ),
+                                         $nocol
+                                         );
                                    
-                      
-                                 $tb_tab2 = new mytable(array('id'=>'tbhslfilter'.$i++,'width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
-                                                            $jdltbl,
-                                                            $dt_tb,$txt);
 
-                                 $html_tab2 .= $tb_tab2->display('tbhslfilter').'<br><br>';
+                                   $tb_tab7 = new mytable(array('id'=>'tbhslfilter','width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
+                                                              $jdltbl,
+                                                              $dt_tb,$txt);
 
-                               }
-                             }
-                         }
-                      }
+                                   $html_tab7 .= $tb_tab7->display('table table-bordered table-hover').'<br><br>';
 
-                      echo $html_tab2;
+                       echo $html_tab7; 
  ?>              
          

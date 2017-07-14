@@ -115,11 +115,11 @@
                                      );
                                
 
-                               $tb_tab2 = new mytable(array('id'=>'tbtab2','width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
+                               $tb_tab2 = new mytable(array('id'=>'tbhslfilter','width'=>'100%','border'=>'2','cellpadding'=>'8','cellspacing'=>'0','style'=>'border-collapse: collapse'),
                                                           $jdltbl,
                                                           $dt_tb,$txt);
 
-                               $html_tab2 .= $tb_tab2->display().'<br><br>';
+                               $html_tab2 .= $tb_tab2->display('table table-bordered table-hover').'<br><br>';
                  
                    echo $html_tab2;  
  ?>              

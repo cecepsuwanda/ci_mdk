@@ -27,7 +27,7 @@ class Non_acptr_reas_model extends CI_Model {
    	return $this->query->num_rows();
    }
 
-  public function getnm($where,$isjumlah=1,$istotal=0,$isprosen=0,$tmp=array(),$attr=array())
+  public function getnm($where,$isjumlah=1,$tmp=array(),$attr=array())
    {
 	  $data = $this->getdata($where);    
     

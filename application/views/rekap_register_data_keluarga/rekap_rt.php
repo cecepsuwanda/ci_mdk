@@ -38,7 +38,9 @@
   table.tbhslfilter  { font-size: 9px; }
   table.tbjudul  { font-size: 9px; }
 
-  
+  .table thead,
+  .table th {text-align: center; vertical-align:middle;}
+  .table  { font-size: 9px; }
 
   </style>
 </head>
@@ -165,7 +167,19 @@
    var folder='<?php  echo basename(dirname($_SERVER['PHP_SELF'])); ?>';
    var page = '<?php echo basename($_SERVER['PHP_SELF']); ?>';
 
-  
+    
+   function afterajax(data)
+   {
+      $(".table").DataTable({
+        "paging": true, 
+        "searching": false,
+        "ordering": false,
+        "info": true,
+        "scrollX": true
+      });
+   }
+
+
    function myajax(id,data1,url,fbefore=null,fafter=null) {
         
         if(fbefore != null){
@@ -256,7 +270,7 @@
 
             data = "idkec=" + idkec + "&iddesa=" + iddesa + "&iddusun=" + iddusun+'&jns_rpt='+jns_rpt+'&folder='+folder+'&page='+page;
             $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-            myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/rekap_register_data_keluarga_filter",null,null);
+            myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/rekap_register_data_keluarga_filter",null,afterajax);
 
           }
 
@@ -280,7 +294,7 @@
 
                 data = "idkec=" + idkec + "&iddesa=" + iddesa + "&iddusun=" + iddusun + '&idrt='+idrt+'&jns_rpt='+jns_rpt+'&folder='+folder+'&page='+page;
                 $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-                myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/rekap_register_data_keluarga_filter",null,null);
+                myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/rekap_register_data_keluarga_filter",null,afterajax);
           }  
 
        }); 

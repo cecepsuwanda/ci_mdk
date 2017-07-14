@@ -374,7 +374,7 @@ class Rekap_register_data_keluarga_model extends CI_Model {
               
 
 
-              if(!empty($data1))
+              if(!empty($data1->result_array()))
               {
                 foreach ($data1->result_array() as $row1) {
                    $j=1;
@@ -431,8 +431,9 @@ class Rekap_register_data_keluarga_model extends CI_Model {
 
             
               
-            if(!empty($data2))
+            if(!empty($data2->result_array()))
               {
+                
                 foreach ($data2->result_array() as $row2) {
                    $j=1;
                    foreach ($row2 as $key2 => $value2) {
@@ -478,13 +479,11 @@ class Rekap_register_data_keluarga_model extends CI_Model {
                    
                 }
               }else{
+                 
                  for($j=1;$j<=11;$j++)
                  {
                     $tmp[]='';
                  }
-
-
-
               }
 
 
