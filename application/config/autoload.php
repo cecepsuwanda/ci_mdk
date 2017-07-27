@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('User_model','Typeuser_unit_detail_model','Unit_detail_model','Menu_model','Pelaporan_model','Empmntstat_model','Contr_typ_model','Non_acptr_reas_model','Edu_lvl_model','Indikator_ks_model','Rekap_1_model','Rekap_register_data_keluarga_model','Contr_src_model','Rekap_data_keluarga_model');
+$autoload['model'] = array('User_model','Typeuser_unit_detail_model','Unit_detail_model','Menu_model','Pelaporan_model','Empmntstat_model','Contr_typ_model','Non_acptr_reas_model','Edu_lvl_model','Indikator_ks_model','Rekap_1_model','Rekap_register_data_keluarga_model','Contr_src_model','Rekap_data_keluarga_model','Report_ks_model');
 
 
 /* End of file autoload.php */
