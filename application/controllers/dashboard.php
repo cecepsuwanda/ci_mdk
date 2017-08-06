@@ -224,6 +224,52 @@ class Dashboard extends CI_Controller {
      
   } 
 
+  public function report_ks_alek_filter()
+  {
+     $iddusun = $this->input->post('iddusun');
+     $iddesa = $this->input->post('iddesa');
+     $idkec = $this->input->post('idkec');
+     $idrt = $this->input->post('idrt');
+     $folder = $this->input->post('folder');
+     $page = $this->input->post('page');
+
+     
+     $tmp_dt_tb=$this->Report_ks_model->report_ks_alek($idkec,$iddesa,$iddusun,$idrt);
+
+     $data['idkec']=$idkec;
+     $data['iddesa']=$iddesa;
+     $data['iddusun']=$iddusun;
+     $data['idrt']=$idrt;
+     $data['tmp_dt_tb']=$tmp_dt_tb;
+
+     echo $this->load->view($folder.'/hsl_filter.php',$data,true);  
+     
+  } 
+
+  public function report_ks_kb_filter()
+  {
+     $iddusun = $this->input->post('iddusun');
+     $iddesa = $this->input->post('iddesa');
+     $idkec = $this->input->post('idkec');
+     $idrt = $this->input->post('idrt');
+     $cmbkb = $this->input->post('cmbkb');
+     $folder = $this->input->post('folder');
+     $page = $this->input->post('page');
+
+     
+     $tmp_dt_tb=$this->Report_ks_model->report_ks_kb($idkec,$iddesa,$iddusun,$idrt,$cmbkb);
+
+     $data['idkec']=$idkec;
+     $data['iddesa']=$iddesa;
+     $data['iddusun']=$iddusun;
+     $data['idrt']=$idrt;
+     $data['tmp_dt_tb']=$tmp_dt_tb;
+     $data['kb']=$cmbkb;
+
+     echo $this->load->view($folder.'/hsl_filter.php',$data,true);  
+     
+  } 
+
   public function rekap_register_data_keluarga_filter()
   {
      $iddusun = $this->input->post('iddusun');
@@ -309,5 +355,20 @@ class Dashboard extends CI_Controller {
       $this->load->view('report_ks/'.$param1,$data);
   }
   
+  public function report_ks_alek($param1)
+  {
+      $data['menu'] = $this->get_menu();
+      $tmp_data=$this->filter_limit();      
+      $data=array_merge($data,$tmp_data);
+      $this->load->view('report_ks_alek/'.$param1,$data);
+  }
+
+  public function report_ks_kb($param1)
+  {
+      $data['menu'] = $this->get_menu();
+      $tmp_data=$this->filter_limit();      
+      $data=array_merge($data,$tmp_data);
+      $this->load->view('report_ks_kb/'.$param1,$data);
+  }
 
 }

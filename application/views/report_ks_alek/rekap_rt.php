@@ -46,7 +46,7 @@
   <?php $this->load->view('header');  ?>
   <!-- Left side column. contains the logo and sidebar -->
   <?php 
-        $data['menu_active'] = array(163,164,165); 
+        $data['menu_active'] = array(163,164,273); 
         $this->load->view('sidebar',$data);  
   ?>
 
@@ -56,7 +56,7 @@
     <section class="content-header">
       <h1>
          
-        <small>PRA S Dan KS I</small>
+        <small>Pra S - KS I Alek Dan Non Alek</small>
       </h1> 
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Rekapitulasi </a></li>
@@ -251,7 +251,7 @@
           var idkec = $('#kec option:selected').val();
           data ="idkec=" + idkec + '&folder='+folder+'&page='+page;
           $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_filter",null,afterajax);
+          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_alek_filter",null,afterajax);
        });
 
       $("#filter_desa").click(function () {
@@ -259,7 +259,7 @@
          var iddesa = $('#desa option:selected').val();
          data = "idkec=" + idkec + "&iddesa=" + iddesa + '&folder='+folder+'&page='+page;
          $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-         myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_filter",null,afterajax);
+         myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_alek_filter",null,afterajax);
       });
 
  
@@ -269,7 +269,7 @@
           var iddusun = $('#dusun option:selected').val();        
           data = "idkec=" + idkec + "&iddesa=" + iddesa + "&iddusun=" + iddusun+ '&folder='+folder+'&page='+page;
           $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_filter",null,afterajax);
+          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_alek_filter",null,afterajax);
       });
 
   
@@ -281,7 +281,7 @@
           var idrt = $('#rt option:selected').val();
           data = "idkec=" + idkec + "&iddesa=" + iddesa + "&iddusun=" + iddusun + '&idrt='+idrt+ '&folder='+folder+'&page='+page;
           $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_filter",null,afterajax);
+          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_alek_filter",null,afterajax);
        }); 
 
 

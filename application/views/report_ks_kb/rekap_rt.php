@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- jvectormap -->
   <link rel="stylesheet" href="<?php echo base_url();?>assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="<?php echo base_url();?>assets/plugins/iCheck/all.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="<?php echo base_url();?>assets/plugins/select2/select2.min.css">
   <!-- DataTables -->
@@ -46,7 +48,7 @@
   <?php $this->load->view('header');  ?>
   <!-- Left side column. contains the logo and sidebar -->
   <?php 
-        $data['menu_active'] = array(163,164,165); 
+        $data['menu_active'] = array(163,164,166); 
         $this->load->view('sidebar',$data);  
   ?>
 
@@ -56,11 +58,11 @@
     <section class="content-header">
       <h1>
          
-        <small>PRA S Dan KS I</small>
+        <small>PRA KS Dan KS I KB</small>
       </h1> 
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Rekapitulasi </a></li>
-        <li class="active">KS</li>        
+        <li class="active">KS</li>             
       </ol>
     </section>
 
@@ -83,8 +85,8 @@
              $data['desa_select'] = $desa_select;
              $data['dusun_select'] = $dusun_select;
              $data['rt_select'] = $rt_select;
-
-             $this->load->view('filter_v1',$data);  
+            
+             $this->load->view('filter_v7',$data);  
           ?>       
         </div>
         <!-- /.box-body -->
@@ -141,6 +143,8 @@
 <!-- DataTables -->
 <script src="<?php echo base_url();?>assets/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url();?>assets/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="<?php echo base_url();?>assets/plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo base_url();?>assets/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
@@ -164,17 +168,31 @@
    var folder='<?php echo basename(dirname($_SERVER['PHP_SELF'])); ?>';
    var page = '<?php echo basename($_SERVER['PHP_SELF']); ?>';
 
-   function afterajax(data1)
-   {
-      
-      oTable=$("#tbhslfilter").dataTable({
-        "paging": true, 
-        "searching": true,
-        "ordering": false,
-         "info": true});
+   function cek_filter() {
+      var iscmbks = $('#cmbkb').length > 0;
+      var isfilter = true;
+      if (iscmbks) {
+        isfilter = $('#cmbkb:checked').length > 0;
+        if (!isfilter) {
+          isfilter = false;
+          alert('PILIH STATUS KB (KB/NON KB) DAHULU !!!');
+
+        }
+      }
+
+      return isfilter;
    }
 
-   function myajax(id,data1,url,fbefore=null,fafter=null) {
+   function afterajax(data)
+   {
+      $("#tbhslfilter").DataTable({
+        "paging": false, 
+        "searching": false,
+        "ordering": false,
+         "info": false});
+   }
+
+   function myajax(id,data,url,fbefore=null,fafter=null) {
         
         if(fbefore != null){
             if(typeof fbefore==='function'){
@@ -186,7 +204,7 @@
             "type" : "post",
             "url" : url,
             "cache" : false,
-            "data" : data1,
+            "data" : data,
             success : function (data) {
                 if(id!=''){                  
                   $('#'+id).html(data);
@@ -194,7 +212,7 @@
                 
                 if(fafter != null){
                     if(typeof fafter==='function'){
-                       fafter(data1);
+                       fafter(data);
                     }
                 }
             }
@@ -204,6 +222,11 @@
   $(function () {
      //Initialize Select2 Elements
      $(".select2").select2();
+
+     $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass: 'iradio_minimal-blue'
+    });
 
      $("#kec").change(function () {
        var idkec = $('#kec option:selected').val();
@@ -250,16 +273,22 @@
        $("#filter_kec").click(function () {
           var idkec = $('#kec option:selected').val();
           data ="idkec=" + idkec + '&folder='+folder+'&page='+page;
-          $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_filter",null,afterajax);
+         if(cek_filter()){
+           data = data + "&cmbkb=" + $('#cmbkb:checked').val();
+            $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
+            myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_kb_filter",null,afterajax);
+         } 
        });
 
       $("#filter_desa").click(function () {
          var idkec = $('#kec option:selected').val();
          var iddesa = $('#desa option:selected').val();
          data = "idkec=" + idkec + "&iddesa=" + iddesa + '&folder='+folder+'&page='+page;
+         if(cek_filter()){
+          data = data + "&cmbkb=" + $('#cmbkb:checked').val();
          $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-         myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_filter",null,afterajax);
+         myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_kb_filter",null,afterajax);
+         }
       });
 
  
@@ -268,11 +297,12 @@
           var iddesa = $('#desa option:selected').val();
           var iddusun = $('#dusun option:selected').val();        
           data = "idkec=" + idkec + "&iddesa=" + iddesa + "&iddusun=" + iddusun+ '&folder='+folder+'&page='+page;
+          if(cek_filter()){
+            data = data + "&cmbkb=" + $('#cmbkb:checked').val();
           $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_filter",null,afterajax);
+          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_kb_filter",null,afterajax);
+          }
       });
-
-  
 
       $("#filter_rt").click(function () {
           var idkec = $('#kec option:selected').val();
@@ -280,12 +310,12 @@
           var iddusun = $('#dusun option:selected').val();
           var idrt = $('#rt option:selected').val();
           data = "idkec=" + idkec + "&iddesa=" + iddesa + "&iddusun=" + iddusun + '&idrt='+idrt+ '&folder='+folder+'&page='+page;
+         if(cek_filter()){
+            data = data + "&cmbkb=" + $('#cmbkb:checked').val();  
           $('#hslfilter').html("<font size='5' color='red'>Silahkan Tunggu, Sedang Proses ....<\/font> <img src='<?php echo base_url();?>assets/img/ajax-loader.gif' />");
-          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_filter",null,afterajax);
+          myajax('hslfilter',data,"<?php echo base_url();?>index.php/dashboard/report_ks_kb_filter",null,afterajax);
+          } 
        }); 
-
-
-       
 
          
   });
